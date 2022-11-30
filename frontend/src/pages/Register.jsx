@@ -12,11 +12,10 @@ const Register = () => {
     password: "",
     password2: "",
   });
-
-  const { name, email, password, password2 } = formData;
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { name, email, password, password2 } = formData;
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -49,7 +48,8 @@ const Register = () => {
       toast.error("Passwords do not match");
     } else {
       const userData = { name, email, password };
-      dispatch(register(userData));
+
+      dispatch(register(userData)).catch(toast.error);
     }
   };
 
@@ -57,7 +57,7 @@ const Register = () => {
     <>
       <section className="heading">
         <h1>
-          <FaUser /> Register {user}
+          <FaUser /> Register
         </h1>
         <p>Please create an account</p>
       </section>

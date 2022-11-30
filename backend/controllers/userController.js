@@ -7,9 +7,11 @@ const User = require("../models/userModel");
 //  /api/users
 //  Public
 
-const registeredUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res) => {
+
   const { name, email, password } = req.body;
 
+ 
   // throw err if field is missing
   if (!name || !email || !password) {
     res.status(400);
@@ -32,7 +34,7 @@ const registeredUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    res.status(201).send({
+    res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -54,7 +56,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // check user exists and password matches
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).send({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -62,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error("Invaid credentials");
+    throw new Error("Invalid credentials");
   }
 });
 
@@ -80,7 +82,7 @@ const generateToken = (id) => {
 };
 
 module.exports = {
-  registeredUser,
+  registerUser,
   loginUser,
   getMe,
 };
