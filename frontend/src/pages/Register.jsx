@@ -4,19 +4,20 @@ import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     password2: "",
   });
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { name, email, password, password2 } = formData;
-
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
@@ -25,15 +26,14 @@ const Register = () => {
     if (isError) {
       toast.error(message);
     }
-
     // redirect when logged in
     if (isSuccess || user) {
       navigate("/");
     }
-
     dispatch(reset());
   }, [isError, isSuccess, user, message, navigate, dispatch]);
 
+  //onchange of form data
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -41,6 +41,7 @@ const Register = () => {
     }));
   };
 
+  //onsubmit of form data
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -53,6 +54,9 @@ const Register = () => {
     }
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <>
       <section className="heading">
