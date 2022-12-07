@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const {
   getTickets,
   createTicket,
@@ -6,10 +7,13 @@ const {
   deleteTicket,
   updateTicket,
 } = require("../controllers/ticketController");
-const router = express.Router();
-getTickets;
 
 const { protect } = require("../middlewear/authMiddlewear");
+
+// Re-route into note router
+const noteRouter = require("./noteRoutes");
+router.use("./:ticketId/notes", noteRouter);
+// 
 
 router.route("/").get(protect, getTickets).post(protect, createTicket);
 
